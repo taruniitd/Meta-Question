@@ -1,0 +1,48 @@
+//https://www.geeksforgeeks.org/converting-roman-numerals-decimal-lying-1-3999/
+#include <iostream>
+#include <map>
+#include <cstring>
+using namespace std;
+
+int romanToDecimal(map<char,int> romanMap, char romanStr[], int curRomanStrLen, int &cur_Char, int &sum)
+{
+    if(cur_Char > curRomanStrLen)
+        return sum ;
+    int s1 = romanMap[romanStr[cur_Char]]; //1000, 100
+    int s2 = 0;
+    if((cur_Char + 1) > curRomanStrLen)
+        s2 = 0;
+    else
+        s2 = romanMap[romanStr[cur_Char + 1]]; //100, 1000
+    if(s1 >= s2)
+    {
+        sum += s1;//1000
+        cur_Char++; //1
+    }
+    else
+    {
+        sum = sum + s2 - s1;//1900
+        cur_Char++;
+        cur_Char++; //3, 5
+    }
+    
+    return romanToDecimal(romanMap, romanStr, curRomanStrLen, cur_Char, sum);
+}
+
+int main() {
+	map<char,int> romanMap;
+	romanMap['I'] = 1;
+	romanMap['V'] = 5;
+	romanMap['X'] = 10;
+	romanMap['L'] = 50;
+	romanMap['C'] = 100;
+	romanMap['D'] = 500;
+	romanMap['M'] = 1000;
+	char romanStr[] = "MMMDCCCXXVI";//"MMMCCCXXXI";//"MDCCIX";//"MDCV";//"MCMIV";//"IVX";//"MCMIV";//"CMDIV"; // IVX
+	int sum = 0;
+	int cur_Char = 0;
+	int romanStrLen = strlen(romanStr);
+	int deciOut = romanToDecimal(romanMap,romanStr,romanStrLen - 1, cur_Char, sum);
+	cout << "romanToDecimal = " << sum << endl;
+	return 0;
+}

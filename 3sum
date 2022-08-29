@@ -1,0 +1,91 @@
+//https://www.tutorialcup.com/leetcode-solutions/3sum-leetcode-solution.htm
+//https://www.geeksforgeeks.org/find-a-triplet-that-sum-to-a-given-value/
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+using namespace std;
+
+typedef struct tripletAns
+{
+    int x;
+    int y;
+    int z;
+} tripletAns;
+
+vector<tripletAns> find3Sum(int arr[], int arrLen, int& count)
+{
+    //cout << arrLen << endl;
+    vector<tripletAns> temptriplet;
+    for(int i = 0; i < arrLen - 2; i++)
+    {
+        for(int j = i + 1; j < arrLen - 1; j++)
+        {
+            for(int k = j + 1; k < arrLen; k++)
+            {
+                if(arr[i] + arr[j] + arr[k] == 0)
+                {
+                    tripletAns temp;
+                    temp.x = arr[i];
+                    temp.y = arr[j];
+                    temp.z = arr[k];
+                    temptriplet.push_back(temp);
+                    count++;
+                }
+            }
+        }
+    }
+    return temptriplet;
+}
+
+set<vector<int>> find3Sum_binarySearchNsqr(vector<int> arr , int arrLen, int& count)
+{
+    set<vector<int>> temptriplet;
+    sort(arr.begin(), arr.end());
+    vector<int> temp;
+    temp.resize(3);
+    for(int i = 0; i < arrLen; i++)
+    {
+        for(int j = i + 1; j < arrLen; j++)
+        {
+            if(binary_search(arr.begin(), arr.end(), -(arr[i] + arr[j])))
+            {
+                /*tripletAns temp;
+                temp.x = arr[i];
+                temp.y = arr[j];
+                temp.z = -(arr[i] + arr[j]);*/
+                temp[0] = arr[i];
+                temp[1] = arr[j];
+                temp[2] = -(arr[i] + arr[j]);
+                sort(temp.begin(), temp.end());
+                temptriplet.insert(temp);
+                count++;
+            }
+        }
+    }
+    return temptriplet;
+}
+int main() {
+	int arr[] = { 0, -1, 2, -2, 1, 3, 4, 5};
+	int arrLen = sizeof(arr) / sizeof(arr[0]);
+	int count = 0;
+	
+	vector<tripletAns> ans = find3Sum(arr, arrLen, count);
+	cout << "No of triplets = " << count << endl;
+	for(auto var : ans)
+	{
+	    cout << var.x << "  " << var.y << "  " << var.z << endl;
+	}
+	
+	cout << "Use 2nd method : " << endl;
+	count = 0;
+	vector<int> arrV = { 0, -1, 2, -2, 1, 3, 4, 5};
+	
+	set<vector<int>> ansV = find3Sum_binarySearchNsqr(arrV, arrV.size(), count);
+	cout << "No of triplets = " << ansV.size() << endl;
+	for(auto var : ansV)
+	{
+	    cout << var[0] << "  " << var[1] << "  " << var[2] << endl;
+	}
+	return 0;
+}

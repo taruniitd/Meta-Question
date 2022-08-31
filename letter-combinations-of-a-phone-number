@@ -1,0 +1,44 @@
+//https://www.geeksforgeeks.org/iterative-letter-combinations-of-a-phone-number/
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<string> letterCombinationsUtil(int num[], int size, string table[])
+{
+    vector<string>list;
+    queue<string> q;
+    q.push("");
+    
+    while(!q.empty())
+    {
+        string tempStr = q.front();
+        q.pop();
+        
+        if(tempStr.length() == size)
+            list.push_back(tempStr);
+        else
+        {
+            for(auto letter : table[num[tempStr.length()]])
+                q.push(tempStr + letter);
+        }
+    }
+    return list;
+}
+
+void letterCombinations(int num[], int size)
+{
+    string table[] = { "0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+    vector<string> list = letterCombinationsUtil(num, size, table);
+    for(auto str : list)
+        cout << str << "  ";
+    cout << endl;
+}
+
+int main() {
+	int num[] = {2, 3};
+	int size = sizeof(num) / sizeof(num[0]);
+	
+	letterCombinations(num, size);
+	return 0;
+}
